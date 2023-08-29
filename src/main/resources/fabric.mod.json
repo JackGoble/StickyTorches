@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "stickytorches",
+	"version": "${version}",
+	"name": "Sticky Torches",
+	"description": "This mod adds sticky torches to the game, which are made with slime and can be thrown against walls",
+	"authors": [
+		"LastEmber(z)"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/stickytorches/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.lastemberz.stickytorches.StickyTorches"
+		],
+		"fabric-datagen": [
+			"com.lastemberz.stickytorches.StickyTorchesDataGenerator"
+		]
+	},
+	"mixins": [
+		"stickytorches.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.22",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T",
+    "S"
+  ],
+  "key": {
+    "T": "minecraft:torch",
+    "S": "minecraft:slime_ball"
+  },
+  "result": {
+    "id" : "sticky_torches:sticky_torch",
+    "count": 1
+  }
+}

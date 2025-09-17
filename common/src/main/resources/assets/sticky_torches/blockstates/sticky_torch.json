@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=up":    { "model": "sticky_torches:block/sticky_torch" },
+    "facing=north": { "model": "sticky_torches:block/sticky_wall_torch",
+                      "y": 270 },
+    "facing=south": { "model": "sticky_torches:block/sticky_wall_torch",
+                      "y": 90 },
+    "facing=east":  { "model": "sticky_torches:block/sticky_wall_torch" },
+    "facing=west":  { "model": "sticky_torches:block/sticky_wall_torch",
+                      "y": 180 },
+    "facing=down":  { "model": "sticky_torches:block/sticky_ceiling_torch" }
+  }
+}

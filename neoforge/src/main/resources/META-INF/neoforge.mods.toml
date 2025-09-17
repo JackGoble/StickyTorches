@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[9,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "sticky_torches"
+version = "${version}"
+displayName = "StickyTorches"
+authors = "LastEmber"
+description = '''
+This mod adds throwable "sticky" torches to minecraft. Crafted using a slimeball and a torch.
+'''
+#logoFile = ""
+
+[[dependencies.sticky_torches]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.8,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.sticky_torches]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.8,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.sticky_torches]]
+modId = "architectury"
+type = "required"
+versionRange = "[17.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "sticky_torches.mixins.json"

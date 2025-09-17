@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_torch",
+  "textures": {
+    "torch": "sticky_torches:block/sticky_torch"
+  }
+}

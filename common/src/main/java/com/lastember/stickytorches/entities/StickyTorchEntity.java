@@ -67,6 +67,10 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
             this.level().playSound((Entity)null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.1F, 1.6F);
 
         }
+        else {
+            this.level().setBlock(pos, StickyTorchesBlocks.STICKY_TORCH.get().defaultBlockState(), 3);
+            this.level().destroyBlock(pos, true);
+        }
 
         //TODO: if state is null, set projectile direction to DOWN and let it fall and stick somewhere.
 

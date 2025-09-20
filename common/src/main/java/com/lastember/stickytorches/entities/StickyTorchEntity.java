@@ -4,6 +4,8 @@ import com.lastember.stickytorches.blocks.StickyTorchesBlocks;
 import com.lastember.stickytorches.items.StickyTorchesItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -59,7 +61,11 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
         BlockState state = StickyTorchesBlocks.STICKY_TORCH.get().getStateForPlacement(directions, this.level(), hitResult.getBlockPos());
         // If block can be placed at location, set block with proper state
         if (state != null) {
+
             this.level().setBlock(pos, state, 3);
+            this.level().playSound((Entity)null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            this.level().playSound((Entity)null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.1F, 1.6F);
+
         }
 
         //TODO: if state is null, set projectile direction to DOWN and let it fall and stick somewhere.

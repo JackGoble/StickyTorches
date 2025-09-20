@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.core.Direction.*;
 
@@ -34,7 +35,7 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected Item getDefaultItem() {
+    protected @NotNull Item getDefaultItem() {
         return StickyTorchesItems.STICKY_TORCH.get();
     }
 
@@ -63,8 +64,8 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
         if (state != null) {
 
             this.level().setBlock(pos, state, 3);
-            this.level().playSound((Entity)null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            this.level().playSound((Entity)null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.1F, 1.6F);
+            this.level().playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            this.level().playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.1F, 1.6F);
 
         }
         else {

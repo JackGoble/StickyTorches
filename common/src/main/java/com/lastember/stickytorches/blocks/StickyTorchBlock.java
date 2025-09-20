@@ -1,14 +1,23 @@
 package com.lastember.stickytorches.blocks;
 
+
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.BaseTorchBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -17,9 +26,22 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class StickyTorchBlock extends Block {
 
+public class StickyTorchBlock extends BaseTorchBlock {
+    protected static final MapCodec<SimpleParticleType> PARTICLE_OPTIONS_FIELD = BuiltInRegistries.PARTICLE_TYPE
+            .byNameCodec()
+            .<SimpleParticleType>comapFlatMap(
+                    particleType -> particleType instanceof SimpleParticleType simpleParticleType
+                            ? DataResult.success(simpleParticleType)
+                            : DataResult.error(() -> "Not a SimpleParticleType: " + particleType),
+                    simpleParticleType -> simpleParticleType
+            )
+            .fieldOf("particle_options");
+    public static final MapCodec<StickyTorchBlock> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(PARTICLE_OPTIONS_FIELD.forGetter(torchBlock -> torchBlock.flameParticle), propertiesCodec()).apply(instance, StickyTorchBlock::new)
+    );
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
+    protected final SimpleParticleType flameParticle;
 
     protected static final VoxelShape FLOOR_SHAPE = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 10.0D, 10.0D);
     protected static final VoxelShape NORTH_SHAPE = Block.box(5.0D, 3.0D, 11.0D, 11.0D, 13.0D, 16.0D);
@@ -28,9 +50,15 @@ public class StickyTorchBlock extends Block {
     protected static final VoxelShape EAST_SHAPE = Block.box(0.0D, 3.0D, 5.0D, 5.0D, 13.0D, 11.0D);
     protected static final VoxelShape CEILING_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 16.0D, 10.0D);
 
-    public StickyTorchBlock(Properties properties) {
+    public StickyTorchBlock(SimpleParticleType flameParticle, Properties properties) {
         super(properties.lightLevel(state -> 14).noCollission());
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.UP));
+        this.flameParticle = flameParticle;
+    }
+
+    @Override
+    protected MapCodec<? extends BaseTorchBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -45,6 +73,23 @@ public class StickyTorchBlock extends Block {
         };
     }
 
+    @Override
+    protected BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            ScheduledTickAccess scheduledTickAccess,
+            BlockPos pos,
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
+    ) {
+        return !this.canSurvive(state, level, pos)
+                ? Blocks.AIR.defaultBlockState()
+                : super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
+    }
+
+
     /**
      * Checks if this block can exist at a location
      * <p>
@@ -58,10 +103,10 @@ public class StickyTorchBlock extends Block {
      */
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        Direction direction = state.getValue(FACING);
-        BlockPos attachedPos = pos.relative(direction.getOpposite());
-        BlockState attachedState = level.getBlockState(attachedPos);
-        return attachedState.isFaceSturdy(level, attachedPos, direction);
+            Direction direction = state.getValue(FACING);
+            BlockPos attachedPos = pos.relative(direction.getOpposite());
+            BlockState attachedState = level.getBlockState(attachedPos);
+            return attachedState.isFaceSturdy(level, attachedPos, direction);
     }
 
     @Override
@@ -71,7 +116,16 @@ public class StickyTorchBlock extends Block {
                 return this.defaultBlockState().setValue(FACING, direction.getOpposite());
             }
         }
+        return null;
+    }
 
+    public BlockState getStateForPlacement(Direction[] directions, Level level, BlockPos pos) {
+        for (Direction direction : directions) {
+            BlockState state = this.defaultBlockState().setValue(FACING, direction);
+            if (this.canSurvive(state, level, pos.relative(direction))) {
+                return state;
+            }
+        }
         return null;
     }
 

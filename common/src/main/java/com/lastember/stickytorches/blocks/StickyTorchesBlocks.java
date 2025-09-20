@@ -3,6 +3,7 @@ package com.lastember.stickytorches.blocks;
 import com.lastember.stickytorches.StickyTorchesMod;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -11,20 +12,18 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.function.Supplier;
 
-
-
 public class StickyTorchesBlocks {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(StickyTorchesMod.MOD_ID, Registries.BLOCK);
 
-    public static RegistrySupplier<Block> STICKY_TORCH;
+    public static RegistrySupplier<StickyTorchBlock> STICKY_TORCH;
 
     public static void initBlocks() {
-        STICKY_TORCH = registerBlock("sticky_torch", () -> new StickyTorchBlock(baseProperties("sticky_torch")));
+        STICKY_TORCH = registerBlock("sticky_torch", () -> new StickyTorchBlock(ParticleTypes.FLAME, baseProperties("sticky_torch")));
 
         BLOCKS.register();
     }
 
-    public static RegistrySupplier<Block> registerBlock(String name, Supplier<Block> block) {
+    public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> block) {
         return BLOCKS.register(ResourceLocation.fromNamespaceAndPath(StickyTorchesMod.MOD_ID, name), block);
     }
 

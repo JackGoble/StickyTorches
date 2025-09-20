@@ -67,14 +67,8 @@ public class StickyTorchBlock extends Block {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         for (Direction direction : context.getNearestLookingDirections()) {
-            if (direction.getAxis() != Direction.Axis.Y) { // Wall placement
-                if (this.canSurvive(this.defaultBlockState().setValue(FACING, direction.getOpposite()), context.getLevel(), context.getClickedPos())) {
-                    return this.defaultBlockState().setValue(FACING, direction.getOpposite());
-                }
-            } else { // Floor or ceiling placement
-                if (this.canSurvive(this.defaultBlockState().setValue(FACING, direction.getOpposite()), context.getLevel(), context.getClickedPos())) {
-                    return this.defaultBlockState().setValue(FACING, direction.getOpposite());
-                }
+            if (this.canSurvive(this.defaultBlockState().setValue(FACING, direction.getOpposite()), context.getLevel(), context.getClickedPos())) {
+                return this.defaultBlockState().setValue(FACING, direction.getOpposite());
             }
         }
 

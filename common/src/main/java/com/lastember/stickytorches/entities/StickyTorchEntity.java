@@ -49,16 +49,16 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
         // Replace the first entry in directions with the face that was collided with
         Direction direction = hitResult.getDirection().getOpposite();
         int i = 0;
-        while (i < directions.length && directions[i] != direction.getOpposite()) {
+        while (i < directions.length && directions[i] != direction) {
             i++;
         }
         if (i > 0) {
             System.arraycopy(directions, 0, directions, 1, i);
-            directions[0] = direction.getOpposite();
+            directions[0] = direction;
         }
 
         // Get state with proper rotation based on flying direction and surrounding blocks
-        BlockState state = StickyTorchesBlocks.STICKY_TORCH.get().getStateForPlacement(directions, this.level(), hitResult.getBlockPos());
+        BlockState state = StickyTorchesBlocks.STICKY_TORCH.get().getStateForPlacement(directions, this.level(), pos);
         // If block can be placed at location, set block with proper state
         if (state != null) {
 
@@ -90,9 +90,9 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
         float n = bl3 ? Mth.cos(y_rads) : -Mth.cos(y_rads);
         float o = l * Mth.cos(x_rads);
         float p = n * Mth.cos(x_rads);
-        Direction direction = bl ? EAST : WEST;
-        Direction direction2 = bl2 ? UP : DOWN;
-        Direction direction3 = bl3 ? NORTH : SOUTH;
+        Direction direction = bl ? WEST : EAST;
+        Direction direction2 = bl2 ? DOWN : UP;
+        Direction direction3 = bl3 ? SOUTH : NORTH;
         if (l > n) {
             if (m > o) {
                 return makeDirectionArray(direction2, direction, direction3);

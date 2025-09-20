@@ -121,8 +121,8 @@ public class StickyTorchBlock extends BaseTorchBlock {
 
     public BlockState getStateForPlacement(Direction[] directions, Level level, BlockPos pos) {
         for (Direction direction : directions) {
-            BlockState state = this.defaultBlockState().setValue(FACING, direction);
-            if (this.canSurvive(state, level, pos.relative(direction))) {
+            BlockState state = this.defaultBlockState().setValue(FACING, direction.getOpposite());
+            if (this.canSurvive(state, level, pos)) {
                 return state;
             }
         }

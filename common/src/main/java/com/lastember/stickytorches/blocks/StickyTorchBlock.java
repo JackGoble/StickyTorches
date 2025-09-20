@@ -57,7 +57,7 @@ public class StickyTorchBlock extends BaseTorchBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseTorchBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseTorchBlock> codec() {
         return CODEC;
     }
 

@@ -65,7 +65,7 @@ public class StickyTorchEntity extends ThrowableItemProjectile {
 
             this.level().setBlock(pos, state, 3);
             this.level().playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            this.level().playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.1F, 1.6F);
+            this.level().playSound(null, pos, SoundEvents.SLIME_BLOCK_BREAK, SoundSource.BLOCKS, 0.05F, 1.6F);
 
         }
         else {

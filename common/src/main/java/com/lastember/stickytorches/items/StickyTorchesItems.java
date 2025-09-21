@@ -20,7 +20,7 @@ public class StickyTorchesItems {
         STICKY_TORCH = registerItem("sticky_torch",
                 () -> new StickyTorchItem(
                         StickyTorchesBlocks.STICKY_TORCH.get(),
-                        baseProperties("sticky_torch").arch$tab(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                        baseProperties("sticky_torch").arch$tab(CreativeModeTabs.FUNCTIONAL_BLOCKS)
                 )
         );
 
